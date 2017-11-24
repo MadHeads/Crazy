@@ -1,0 +1,169 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<string.h>
+#include<math.h>
+#pragma warning(disable:4996)
+#define N 20
+void task1()                          //统计字符及其出现的次数
+{
+	int i,j=0,a[75] = { 0 };
+	char ch;
+	printf("请输入字符：\n");
+	while ((ch = getchar())!= '\n')//"ch = getchar()"加与不加括号是有区别的
+	{
+		if ((ch >= '0'&&ch <= '9') || (ch >= 'a'&&ch <= 'z') || (ch >= 'A'&&ch <= 'Z'))
+			a[ch - 48]++;
+	}
+	for (i = 0; i < 75; i++)
+	{
+		if (a[i] != 0)
+		{
+			j++;
+			printf("\'%c\'：%d次%c", i + 48, a[i], j % 5 == 0 ? '\n' : '\t');
+		}
+	}
+}
+void task2()           //给数组排序
+{
+	int i,j,num[N];
+	int n = 0;
+	srand((unsigned)time(NULL));
+	for (i = 0; i < N; i++)
+		num[i]=rand()%100;
+	/*for (i = 0; i < 19; i++) //选择法排序
+	{
+		int k = i;
+		for (j = i + 1; j < N;j++)
+			if(num[k]>num[j])
+			k = j;
+		if (k != i)
+		{
+			int temp = num[i];
+			num[i] = num[k];
+			num[k] = temp;
+		}
+	}*/
+	for(i=0;i<N-1;i++)
+		for (int j = 0; j < N - i-1; j++)
+		{
+			if (num[j] > num[j + 1])
+			{
+				int temp = num[j];
+				num[j] = num[j + 1];
+				num[j + 1] = temp;
+			}
+		}
+	/*for (i = 0; i < N; i++)
+	{
+		printf("%d\t", num[i]);
+		n++;
+		if (n % 5 == 0)
+			putchar('\n');
+	}*/
+}
+void task3()      //二分法查找
+{
+	int low,high,mid;
+	int i,k;
+	int j;
+	int NUM[N];
+	srand((unsigned)time(NULL));
+	for (i = 0; i < N; i++)
+		NUM[i] = rand() % 100;
+	for (i = 0; i<N - 1; i++)
+		for (int j = 0; j < N - i - 1; j++)
+		{
+			if (NUM[j] > NUM[j + 1])
+			{
+				int temp = NUM[j];
+				NUM[j] = NUM[j + 1];
+				NUM[j + 1] = temp;
+			}
+		}
+	for (i = 0; i < N; i++)
+		printf("%d\t", NUM[i]);
+	printf("请输入你要查找的数字：");
+loop:
+	scanf("%d", &k);
+	low = 0, high = N - 1;
+	while (low <= high)
+	{
+		j = 0;
+		mid = (low + high) / 2;
+		if (NUM[mid] == k)
+		{
+			printf("你查找的是下标为%d的元素NUM[%d]=%d", mid, mid, NUM[mid]);
+			j = 1; break;
+		}
+		else if (NUM[mid] > k)
+			high = mid - 1;
+		else 
+			low = mid + 1;
+	}
+	if (j == 0)
+	{
+		printf("该数组的值找不到你输入的值\n");
+		printf("请再输入你想要查找的值：");
+		goto loop;
+	}
+}
+void task4()                  //一维数组中插入一个数
+{
+	int num[7],key,i;
+	printf("请输入6个有序递增的数字：\n");
+	for (int i = 0; i < 6;i++)
+		scanf("%d", &num[i]);
+	printf("请输入待插入的数：");
+		scanf("%d", &key);
+		for (i = 0; i<6 && num[i]<key; i++);
+		if (i == 6)
+			num[6] = key;
+		else
+			for (int j = 6; j > i; j--)
+				num[j] = num[j - 1];
+		num[i] = key;
+		for (i = 0; i < 7; i++)
+			printf("%d\t", num[i]);
+}
+void task5()                               //函数strcat()和strlen()的应用
+{
+	char ch1[N], ch2[100];
+	int long1, long2;
+	printf("请输入一串字符：\nch1=");
+	gets_s(ch1);
+	printf("请输入一串字符：\nch2=");
+	gets_s(ch2);
+	long1 = strlen(ch1);
+	long2 = strlen(ch2);
+	strcat(ch2, ch1);
+	printf("ch1的长度=%d\nch2的长度=%d\n补充后的ch2=%s", long1, long2, ch2);
+}
+void task6()                      //二维数组的应用
+{ 
+	int num[3][4];
+	int i, j;
+	printf("请给3行4列的整型数组赋值：\n");
+	for (i = 0; i < 3; i++)
+		for (j = 0; j < 4; j++)
+			scanf("%d", num[i]+j);//给数组赋值
+	for (i = 0; i < 3; i++)
+		for (j = 0; j < 4; j++)
+			num[i][j] = pow(num[i][j], 2);//对数组进行平方操作
+	for (i = 0; i < 3; i++)
+		for (j = 0; j < 4; j++)
+			printf("%d%c", num[i][j], (j % 3 == 0) ? '\n' : '\t');
+	for (i = 0; i < 3; i++)
+		printf("第%d行的首地址为：0x%08x\n", i+1,num[i]);
+	printf("首元素的地址为：0x%08x", num);
+
+}
+int main()
+{
+	//task1();    //统计字符及其出现的次数
+	//task2();    //给数组排序
+	//task3();    //二分法查找
+	//task4();    //一维数组中插入一个数
+	//task5();    //函数strcat()和strlen()的应用
+	//task6();    //二维数组的应用
+}
